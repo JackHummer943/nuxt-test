@@ -5,9 +5,12 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:lint": "nuxt dev --eslint",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint . --ext .ts,.vue",
+    "lint:fix": "eslint . --ext .ts,.vue --fix"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
@@ -21,9 +24,15 @@
     "yup": "^1.7.1"
   },
   "devDependencies": {
+    "@eslint/migrate-config": "^2.0.0",
+    "@nuxt/eslint": "^1.10.0",
     "@nuxt/eslint-config": "^1.10.0",
     "@nuxt/typescript-build": "^3.0.2",
+    "@typescript-eslint/eslint-plugin": "^8.46.4",
+    "@typescript-eslint/parser": "^8.46.4",
     "eslint": "^9.39.1",
+    "eslint-config": "^0.3.0",
+    "eslint-plugin-vue": "^10.5.1",
     "prettier": "^3.6.2",
     "sass-embedded": "^1.93.3",
     "typescript": "^5.9.3"
