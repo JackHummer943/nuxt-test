@@ -1,0 +1,27 @@
+<script setup lang="ts">
+import { useUserStore } from '@/stores/userStore'
+import { useRouter } from 'vue-router'
+import { useToast } from '@/shared/composables/useToast'
+import UserForm from '@/entities/user/ui/UserForm.vue'
+
+const store = useUserStore()
+const router = useRouter()
+const toast = useToast()
+
+const handleSubmit = async (data: any) => {
+  try {
+    await store.addUser(data)
+    toast.success('Пользователь создан!')
+    router.push('/')
+  } catch {
+    toast.error('Ошибка валидации')
+  }
+}
+</script>
+
+<template>
+  <div class="p-6">
+    <h1 class="text-2xl font-bold mb-6">Создание пользователя</h1>
+    <UserForm @submit="handleSubmit" />
+  </div>
+</template>

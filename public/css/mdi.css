@@ -1,0 +1,50 @@
+@font-face {
+  font-family: 'Material Design Icons';
+  src: url('/fonts/mdi/materialdesignicons-webfont.woff2') format('woff2'),
+    url('/fonts/mdi/materialdesignicons-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+.mdi::before {
+  display: inline-block;
+  font: normal normal normal 24px/1 'Material Design Icons';
+  font-size: inherit;
+  text-rendering: auto;
+  line-height: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mdi-magnify::before {
+  content: "\F349";
+}
+
+.mdi-pencil::before {
+  content: "\F3EB";
+}
+
+.mdi-delete::before {
+  content: "\F5CB";
+}
+
+.mdi-plus::before {
+  content: "\F415";
+}
+
+.mdi-chevron-left::before {
+  content: "\F141";
+}
+
+.mdi-chevron-right::before {
+  content: "\F142";
+}
+
+.mdi-menu::before {
+  content: "\F35D";
+}
+
+.mdi-close::before {
+  content: "\F156";
+}
