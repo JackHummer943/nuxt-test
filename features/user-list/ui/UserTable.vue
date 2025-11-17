@@ -102,13 +102,12 @@ const confirmDelete = () => {
       <v-btn color="primary" @click="router.push('/create')">Добавить</v-btn>
     </div>
 
-    <v-text-field
-v-model="search" label="Поиск" prepend-inner-icon="mdi-magnify" class="mb-4" variant="outlined"
+    <v-text-field v-model="search" label="Поиск" prepend-inner-icon="mdi-magnify" class="mb-6" variant="outlined"
       clearable />
 
-    <v-data-table
-:headers="headers" :items="paginatedUsers" :items-per-page="itemsPerPage" :page="page"
-      :items-length="totalItems" show-current-page @update:options="updateOptions">
+    <v-data-table v-if="$vuetify.display.smAndUp" class="min-w-full divide-y divide-gray-300" :headers="headers"
+      :items="paginatedUsers" :items-per-page="itemsPerPage" :page="page" :items-length="totalItems" show-current-page
+      @update:options="updateOptions">
       <template #[`item.dateOfBirth`]="{ item }">
         {{ new Date(item.dateOfBirth).toLocaleDateString('ru-RU') }}
       </template>
@@ -122,17 +121,64 @@ v-model="search" label="Поиск" prepend-inner-icon="mdi-magnify" class="mb-4
       </template>
     </v-data-table>
 
+    <div v-else class="flex flex-col gap-6">
+      <div v-for="user in paginatedUsers" :key="user.id"
+        class="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
+        <div class="p-6">
+          <div class="grid gap-4 text-sm">
+            <div>
+              <span class="font-medium text-muted-foreground">ФИО:</span>
+              <span class="ml-2">{{ user.fullName }}</span>
+            </div>
+            <div>
+              <span class="font-medium text-muted-foreground">Дата рождения:</span>
+              <span class="ml-2">{{ new Date(user.dateOfBirth).toLocaleDateString('ru-RU') }}</span>
+            </div>
+            <div>
+              <span class="font-medium text-muted-foreground">Email:</span>
+              <span class="ml-2">{{ user.email }}</span>
+            </div>
+            <div>
+              <span class="font-medium text-muted-foreground">Телефон:</span>
+              <span class="ml-2">{{ user.phone }}</span>
+            </div>
+          </div>
+
+          <div class="flex justify-end gap-3 mt-6">
+            <v-btn icon size="small" @click="editUser(user.id)">
+              <v-icon>mdi-pencil</v-icon>
+            </v-btn>
+            <v-btn icon size="small" color="error" @click="openDeleteDialog(user.id)">
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+          </div>
+        </div>
+      </div>
+      <div class="flex-wrap justify-center gap-4 mt-4 mb-6">
+        <span class="text-sm text-gray-600 whitespace-nowrap">Показать:</span>
+        <div>
+          <v-btn v-for="option in [10, 25, 50, 100,{ text: 'Все', value: -1 }]"
+            :key="typeof option === 'object' ? option.value : option" size="small"
+            :color="itemsPerPage === (typeof option === 'object' ? option.value : option) ? 'primary' : 'default'"
+            @click="itemsPerPage = typeof option === 'object' ? option.value : option" class="min-w-[40px]">
+            {{ typeof option === 'object' ? option.text : option }}
+          </v-btn>
+        </div>
+      </div>
+    </div>
     <v-dialog v-model="deleteDialog" max-width="400">
       <v-card>
-      <v-card-title class="text-h6">Подтверждение удаления</v-card-title>
-      <v-card-text class="space-y-2">
-        <span>Вы уверены, что хотите удалить этого пользователя?</span>
-        <span class="font-semibold">Это действие нельзя отменить.</span>
-      </v-card-text>
+        <v-card-title class="text-h6">Подтверждение удаления</v-card-title>
+        <v-card-text class="flex flex-col gap-2">
+          <div>Вы уверены, что хотите удалить этого пользователя?</div>
+          <div class="font-bold">Это действие нельзя отменить.</div>
+        </v-card-text>
         <v-card-actions>
           <v-spacer />
           <v-btn variant="text" @click="deleteDialog = false">Отмена</v-btn>
-          <v-btn color="error" variant="elevated" @click="confirmDelete"> Удалить</v-btn>
+          <v-btn color="error" variant="elevated" @click="confirmDelete">
+            Удалить
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
