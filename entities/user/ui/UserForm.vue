@@ -2,11 +2,15 @@
 import { ref } from 'vue'
 import { userSchema } from '../model/schema'
 import type { UserCreate } from '../model/types'
+import type { ValidationError } from 'yup'
 
-const props = defineProps<{ initialData?: Partial<UserCreate> }>()
+const props = defineProps<{
+  initialData?: Partial<UserCreate>
+}>();
+
 const emit = defineEmits<{
   (e: 'submit', data: UserCreate): void
-}>()
+}>();
 
 const form = ref<UserCreate>({
   fullName: '',
@@ -18,20 +22,26 @@ const form = ref<UserCreate>({
 
 const errors = ref<Record<string, string>>({})
 
-const validate = async () => {
+const validate = async (): Promise<boolean> => {
   try {
-    await userSchema.validate(form.value, { abortEarly: false })
-    errors.value = {}
-    return true
-  } catch (err: any) {
-    const errObj: Record<string, string> = {}
-    err.inner.forEach((e: any) => {
-      errObj[e.path] = e.message
-    })
+    await userSchema.validate(form.value, { abortEarly: false });
+    errors.value = {};
+    return true;
+  } catch (err) {
+    
+    const yupError = err as ValidationError;
+    const errObj: Record<string, string> = {};
+
+    yupError.inner.forEach((e) => {
+      if (e.path) {
+        errObj[e.path] = e.message;
+      }
+    });
+
     errors.value = errObj
     return false
   }
-}
+};
 
 const formatPhone = (v: string) => {
   const digits = v.replace(/\D/g, '')
@@ -48,16 +58,41 @@ const submit = async () => {
 
 <template>
   <v-form @submit.prevent="submit">
-    <v-text-field v-model="form.fullName" label="ФИО" :error-messages="errors.fullName" required />
-    <v-text-field v-model="form.email" label="Email" type="email" :error-messages="errors.email" required />
-    <v-text-field v-model="form.phone" @input="form.phone = formatPhone($event.target.value)" label="Телефон"
-      placeholder="+7-999-123-45-67" :error-messages="errors.phone" required />
-    <v-text-field v-model="form.dateOfBirth" label="Дата рождения" type="date" :error-messages="errors.dateOfBirth"
-      required />
+    <v-text-field
+      v-model="form.fullName"
+      label="ФИО"
+      :error-messages="errors.fullName"
+      required
+    />
+
+    <v-text-field
+      v-model="form.email"
+      label="Email"
+      type="email"
+      :error-messages="errors.email"
+      required
+    />
+
+    <v-text-field
+      v-model="form.phone"
+      label="Телефон"
+      placeholder="+7-999-123-45-67"
+      :error-messages="errors.phone"
+      required
+      @input="form.phone = formatPhone(($event.target as HTMLInputElement).value)"
+    />
+
+    <v-text-field
+      v-model="form.dateOfBirth"
+      label="Дата рождения"
+      type="date"
+      :error-messages="errors.dateOfBirth"
+      required
+    />
 
     <div class="flex gap-2 mt-4">
       <v-btn type="submit" color="primary">Сохранить</v-btn>
-      <v-btn @click="$router.back()" variant="outlined">Отмена</v-btn>
+      <v-btn variant="outlined" @click="$router.back()">Отмена</v-btn>
     </div>
   </v-form>
 </template>
