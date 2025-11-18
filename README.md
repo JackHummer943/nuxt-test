@@ -32,33 +32,6 @@
 | Иконки      | Material Design Icon|           |
 | Язык        | TypeScript          |           |
 
-## Структура проекта (архитектура FSD)
-.
-├── app.vue
-├── pages/
-│   ├── index.vue
-│   ├── create.vue
-│   └── edit/[id].vue
-├── entities/
-│   └── user/
-│       ├── model/
-│       │   ├── types.ts
-│       │   └── schema.ts
-│       └── ui/
-│           └── UserForm.vue
-├── features/
-│   └── user-list/
-│       └── ui/
-│           └── UserTable.vue
-├── shared/
-│   └── composables/
-│       └── useToast.ts
-├── stores/
-│   └── userStore.ts
-└── plugins/
-    └── vuetify.ts
-
-
 ## Начало работы
 ### Клонируйте проект и установите зависимости
 
