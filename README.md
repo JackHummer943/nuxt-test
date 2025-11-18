@@ -33,19 +33,31 @@
 | Язык        | TypeScript          |           |
 
 ## Структура проекта (архитектура FSD)
-.├── app.vue
- ├── pages/
- │  ├── index.vue
- │  ├── create.vue
- │  └── edit/[id].vue
- ├── entities/user/
- │   ├── model/types.ts
- │   ├── model/schema.ts
- │   └── ui/UserForm.vue
- ├── features/user-list/ui/UserTable.vue
- ├── shared/composables/useToast.ts
- ├── stores/userStore.ts
- └── plugins/vuetify.ts
+.
+├── app.vue
+├── pages/
+│   ├── index.vue
+│   ├── create.vue
+│   └── edit/[id].vue
+├── entities/
+│   └── user/
+│       ├── model/
+│       │   ├── types.ts
+│       │   └── schema.ts
+│       └── ui/
+│           └── UserForm.vue
+├── features/
+│   └── user-list/
+│       └── ui/
+│           └── UserTable.vue
+├── shared/
+│   └── composables/
+│       └── useToast.ts
+├── stores/
+│   └── userStore.ts
+└── plugins/
+    └── vuetify.ts
+
 
 ## Начало работы
 ### Клонируйте проект и установите зависимости
@@ -85,3 +97,6 @@ Orlov Evgeny github.com/JackHummer943
 
 ### Форма создания пользователя
 ![Create](./screenshots/create.png)
+
+### Адаптивная карточная раскладка на мобильных устройствах
+![Mobile](./screenshots/mobile-view.png)
